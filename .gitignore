@@ -5,3 +5,4 @@ logs/
 .DS_Store
 coverage/
 .env
+package-lock.json
