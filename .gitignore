@@ -1,3 +1,7 @@
-#gitignore
-# Ignore node modules
+#gitignore .env
 node_modules/
+logs/
+*.log
+.DS_Store
+coverage/
+.env
