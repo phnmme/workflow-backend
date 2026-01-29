@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const attendanceSchema = new mongoose.schema(
+const attendanceSchema = new mongoose.Schema(
     {
         userId:{
-            type: mongoose.schema.Types.ObjectID,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Account",
             required: true,
             index: true,
@@ -18,14 +18,18 @@ const attendanceSchema = new mongoose.schema(
             default: null,
         },
         date:{
-            type: String,
+            type: Date,
             required: true,
         },
         status: {
             type: String,
-            enum: ["present","late","absent"],
+            enum: ["present","late","absent","leave"],
             default: "present",
         },
+        notes: {
+            type: String,
+            default: null,
+        }
     },
     {
         timestamps: true,
@@ -33,5 +37,8 @@ const attendanceSchema = new mongoose.schema(
     }
 )
 attendanceSchema.index({ userId: 1, date: 1 }, { unique: true });
+attendanceSchema.index({ date: 1 });
+attendanceSchema.index({ userId: 1, date: -1 });
+
 
 module.exports = mongoose.model("Attendance",attendanceSchema)

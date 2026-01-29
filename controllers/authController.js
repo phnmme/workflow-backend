@@ -55,6 +55,8 @@ const authController = {
     const { username, password } = req.body;
 
     const user = await Account.findOne({ username });
+    console.log("username from body:", username);
+    console.log("user from db:", user);
     if (!user) {
       return res
         .status(401)
