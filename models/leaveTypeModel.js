@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const leaveTypeSchema = new mongoose.Schema({
-    username: {
+    leaveName: {
       type: String,
       required: true,
       maxlength: 100,
@@ -17,7 +17,7 @@ const leaveTypeSchema = new mongoose.Schema({
     },
     isActive: {
         type: Boolean,
-        default: "TRUE",
+        default: true,
     },
     createdAt: {
       type: Date,

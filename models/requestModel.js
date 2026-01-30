@@ -6,9 +6,9 @@ const leaveRequestSchema = new mongoose.Schema({
         ref:"Account",
         require: true,
     },
-    leaveType: {
+    leaveTypeID: {
         type: mongoose.Schema.ObjectId,
-        ref:"-",
+        ref:"leaveType",
         require:true
     },
     start_date: {
