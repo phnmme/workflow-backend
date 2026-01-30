@@ -6,6 +6,10 @@ const adminDayoffController = require("../controllers/adminDayoffController")
 const { requireUser , requireAdmin } = require("../middlewares/authMiddleware")
 
 router.post("/request",requireUser,dayoffController.requestDayOff)
-router.post("/leaveType",requireAdmin,adminDayoffController.addLeaveType)
+
+
+router.post("/addLeaveType",requireAdmin,adminDayoffController.addLeaveType)
+router.post("/changeStatus",requireAdmin,adminDayoffController.changeStatus)
+
 
 module.exports = router
