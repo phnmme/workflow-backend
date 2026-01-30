@@ -26,4 +26,9 @@ const LogAuthSchema = new mongoose.Schema(
     collection: "auth_logs",
   }
 );
+
+LogAuthSchema.index({ userId:1,date: 1}, {unique : true})
+LogAuthSchema.index({date:1});
+LogAuthSchema.index({userId:1,date: -1});
+
 module.exports = mongoose.model("LogAuth", LogAuthSchema);
