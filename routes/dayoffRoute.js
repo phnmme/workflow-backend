@@ -7,7 +7,7 @@ const { requireUser , requireAdmin } = require("../middlewares/authMiddleware")
 
 router.post("/request",requireUser,dayoffController.requestDayOff)
 router.get("/getMyRequest",requireUser,dayoffController.getMyRequest)
-
+router.post("/cancelRequest",requireUser,dayoffController.cancelRequest)
 
 router.post("/addLeaveType",requireAdmin,adminDayoffController.addLeaveType)
 router.post("/changeStatus",requireAdmin,adminDayoffController.changeStatus)

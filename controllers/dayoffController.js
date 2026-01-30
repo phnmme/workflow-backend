@@ -23,3 +23,20 @@ exports.getMyRequest = async (req, res) => {
     const request = await leaveRequest.find({ userId : user._id})
     res.status(201).json(request)
 }
+
+exports.cancelRequest = async (req, res) => {
+  const { requestID } = req.body
+  const updated = await leaveRequest.findByIdAndUpdate(
+    requestID, 
+    {
+      status: "CANCELED"
+    }
+  )
+
+  if(!updated){
+    res.status(404).json({message: "ไม่พบคำร้อง"})
+  }
+
+  updated.save()
+  res.status(201).json({ message: "ยกเลิกคำร้องเสร็จสิ้น" })
+}
