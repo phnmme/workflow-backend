@@ -22,6 +22,11 @@ exports.changeStatus = async (req, res) => {
       status: status
     }
   )
+
+  if(!updated){
+    res.status(404).json({message: "ไม่พบคำร้อง"})
+  }
+
   updated.save()
   res.status(201).json({ message: "เปลี่ยนสถานะเสร็จสิ้น" })
 }
