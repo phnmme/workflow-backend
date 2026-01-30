@@ -10,6 +10,6 @@ router.post("/request",requireUser,dayoffController.requestDayOff)
 
 router.post("/addLeaveType",requireAdmin,adminDayoffController.addLeaveType)
 router.post("/changeStatus",requireAdmin,adminDayoffController.changeStatus)
-
+router.get("/getRequest",requireAdmin,adminDayoffController.getAllRequest);
 
 module.exports = router

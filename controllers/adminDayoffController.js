@@ -25,3 +25,8 @@ exports.changeStatus = async (req, res) => {
   updated.save()
   res.status(201).json({ message: "เปลี่ยนสถานะเสร็จสิ้น" })
 }
+
+exports.getAllRequest = async (req, res) => {
+  const request = await leaveRequest.find()
+  res.status(201).json(request)
+}
