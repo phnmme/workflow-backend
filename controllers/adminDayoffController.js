@@ -16,11 +16,11 @@ exports.addLeaveType = async (req, res) => {
 
 exports.updateLeaveType = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { leaveTypeID } = req.params;
     const { leaveName, limitDays, detail, isActive } = req.body;
 
     const updated = await leaveType.findByIdAndUpdate(
-      id,
+      leaveTypeID,
       {
         ...(leaveName && { leaveName }),
         ...(limitDays !== undefined && { limitDays }),
@@ -48,11 +48,11 @@ exports.updateLeaveType = async (req, res) => {
 
 
 exports.changeStatus = async (req, res) => {
-  const { id } = req.params;
+  const { requestID } = req.params;
   const { status } = req.body
  
   const updated = await leaveRequest.findByIdAndUpdate(
-    id, 
+    requestID, 
     {
       status: status
     }

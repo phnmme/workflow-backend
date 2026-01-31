@@ -25,7 +25,7 @@ exports.getMyRequest = async (req, res) => {
 }
 
 exports.cancelRequest = async (req, res) => {
-  const { requestID } = req.body
+  const { requestID } = req.params
   const updated = await leaveRequest.findByIdAndUpdate(
     requestID, 
     {
