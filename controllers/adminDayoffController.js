@@ -14,10 +14,45 @@ exports.addLeaveType = async (req, res) => {
   res.status(201).json({ message: "เพิ่มสำเร็จ" })
 }
 
+exports.updateLeaveType = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { leaveName, limitDays, detail, isActive } = req.body;
+
+    const updated = await leaveType.findByIdAndUpdate(
+      id,
+      {
+        ...(leaveName && { leaveName }),
+        ...(limitDays !== undefined && { limitDays }),
+        ...(detail && { detail }),
+        ...(isActive !== undefined && { isActive })
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "ไม่พบประเภทการลา" });
+    }
+
+    res.status(200).json({
+      message: "แก้ไขข้อมูลสำเร็จ",
+      data: updated
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 exports.changeStatus = async (req, res) => {
-  const { requestID, status } = req.body
+  const { id } = req.params;
+  const { status } = req.body
+ 
   const updated = await leaveRequest.findByIdAndUpdate(
-    requestID, 
+    id, 
     {
       status: status
     }

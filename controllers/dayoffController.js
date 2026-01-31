@@ -29,7 +29,7 @@ exports.cancelRequest = async (req, res) => {
   const updated = await leaveRequest.findByIdAndUpdate(
     requestID, 
     {
-      status: "CANCELED"
+      status: "CANCELLED"
     }
   )
 
