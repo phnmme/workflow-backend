@@ -42,7 +42,7 @@ const attendController = {
       const newAttendance = new Attendance({
         userId,
         date: today,
-        checkInTime: now,
+        CheckIn: now,
         status,
       });
 
@@ -52,7 +52,7 @@ const attendController = {
         success: true,
         message: "Check-In สำเร็จ",
         date: formatDateTime(today),
-        checkInTime: formatDateTime(now),
+        CheckIn: formatDateTime(now),
         status,
       });
     } catch (err) {
@@ -72,7 +72,7 @@ const attendController = {
       const attendance = await Attendance.findOne({
         userId,
         date: today,
-        checkOutTime: null,
+        CheckOut: null,
       });
 
       if (!attendance) {
@@ -81,14 +81,14 @@ const attendController = {
         });
       }
 
-      attendance.checkOutTime = now;
+      attendance.CheckOut = now;
       await attendance.save();
 
       res.status(200).json({
         success: true,
         message: "Check-Out สำเร็จ",
-        checkInTime: formatDateTime(attendance.checkInTime),
-        checkOutTime: formatDateTime(now),
+        CheckIn: formatDateTime(attendance.CheckIn),
+        CheckOut: formatDateTime(now),
         status: attendance.status,
       });
     } catch (err) {
@@ -116,8 +116,8 @@ const attendController = {
 
       const formatted = logs.map((log) => ({
         date: formatDateTime(log.date),
-        checkInTime: formatDateTime(log.checkInTime),
-        checkOutTime: formatDateTime(log.checkOutTime),
+        checkInTime: formatDateTime(log.CheckIn),
+        checkOutTime: formatDateTime(log.CheckOut),
         status: log.status,
       }));
 
