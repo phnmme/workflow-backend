@@ -5,6 +5,7 @@ const { Server } = require("socket.io");
 const connectDB = require("./configs/database");
 const app = express();
 const userRoute = require("./routes/authRoute");
+const dayoffRoute = require("./routes/dayoffRoute");
 const attendRoute = require("./routes/attendRoute");
 const logRoute = require("./routes/logRoute");
 const env = require("./configs/env");
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // routes
 app.use("/s/v1", userRoute);
+app.use("/s/v1", dayoffRoute);
 app.use("/chat", chatRoute);
 
 // socket.io
