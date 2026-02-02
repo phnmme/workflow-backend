@@ -4,9 +4,7 @@ const router = express.Router();
 const chatController = require("../controllers/chatController");
 const auth = require("../middlewares/authMiddleware");
 
-/* ======================
-   ROOM
-====================== */
+/* ====================== ROOM */
 
 // สร้างห้อง
 router.post("/rooms",auth.requireUser,chatController.createRoom);
@@ -20,9 +18,7 @@ router.get("/rooms/user/:userId",auth.requireUser,chatController.getUserRooms);
 // ดึงห้องเดียว
 router.get("/rooms/:roomId",auth.requireUser,chatController.getRoomById);
 
-/* ======================
-   MEMBERS
-====================== */
+/* ====================== MEMBERS*/
 
 // เพิ่ม user เข้า room
 router.put("/rooms/:roomId/add-user",auth.requireUser,chatController.addUserToRoom);
@@ -30,9 +26,7 @@ router.put("/rooms/:roomId/add-user",auth.requireUser,chatController.addUserToRo
 // เอา user ออกจาก room
 router.put( "/rooms/:roomId/remove-user",auth.requireUser,chatController.removeUserFromRoom);
 
-/* ======================
-   MESSAGE
-====================== */
+/* ====================== ป-MESSAGE*/
 
 // ดึงข้อความใน room
 router.get("/rooms/:roomId/messages",auth.requireUser,chatController.getMessagesByRoom);
