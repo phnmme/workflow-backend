@@ -3,6 +3,10 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const connectDB = require("./configs/database");
+const app = express();
+const userRoute = require("./routes/authRoute");
+const attendRoute = require("./routes/attendRoute");
+const logRoute = require("./routes/logRoute");
 const env = require("./configs/env");
 
 const userRoute = require("./routes/authRoute");
@@ -26,6 +30,8 @@ const io = new Server(server, {
 require("./socket/chat")(io);
 
 connectDB();
+app.use("/attendance",attendRoute);
+app.use("/log",logRoute);
 
 app.listen(env.port, () => {
   console.log(`Server is running on port ${env.port}`);
