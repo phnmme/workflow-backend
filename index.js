@@ -33,6 +33,7 @@ connectDB();
 app.use("/attendance",attendRoute);
 app.use("/log",logRoute);
 
-app.listen(env.port, () => {
+
+server.listen(env.port, () => {
   console.log(`Server is running on port ${env.port}`);
 });

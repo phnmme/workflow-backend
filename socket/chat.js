@@ -9,21 +9,22 @@ module.exports = (io) => {
     });
 
     socket.on("send_message", async (data) => {
-      /*
-        data = {
-          roomId,
-          senderId,
-          message
-        }
-      */
+      try {
+        const newMessage = await Message.create({
+          roomId: data.roomId,
+          senderId: socket.userId,
+          message: data.message,
+        });
 
-      const newMessage = await Message.create({
-        roomId: data.roomId,
-        senderId: data.senderId,
-        message: data.message,
-      });
+        const populatedMessage = await newMessage.populate(
+          "senderId",
+          "username email"
+        );
 
-      io.to(data.roomId).emit("receive_message", newMessage);
+        io.to(data.roomId).emit("receive_message", populatedMessage);
+      } catch (err) {
+        socket.emit("error_message", "Send message failed");
+      }
     });
 
     socket.on("disconnect", () => {
