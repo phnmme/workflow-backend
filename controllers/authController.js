@@ -116,6 +116,48 @@ const authController = {
       res.status(401).json({ message: "ข้อมูลไม่ถูกต้อง" });
     }
   },
+  getMe: async (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, env.jwtSecretKey);
+      const user = await Account.findById(decoded.userId).select(
+        "-password -__v -deletedAt"
+      );
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+  getAllUsers: async (req, res) => {
+    try {
+      const authHeader = req.headers["authorization"];
+      const token = authHeader.split(" ")[1];
+
+      const decoded = jwt.verify(token, env.jwtSecretKey);
+
+      const users = await Account.find({
+        _id: { $ne: decoded.userId },
+      }).select("-password -__v -deletedAt");
+
+      res.json(users);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+  verifyToken: async (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, env.jwtSecretKey);
+      res.status(200).json({ valid: true, decoded });
+    } catch (err) {
+      res.status(401).json({ valid: false, message: "Invalid token" });
+    }
+  },
 };
 
 module.exports = authController;

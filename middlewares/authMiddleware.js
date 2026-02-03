@@ -54,7 +54,7 @@ const authMiddleware = {
       if (user.role !== "admin") {
         return res.status(403).json({ message: "สิทธิ์การเข้าถึงถูกปฏิเสธ" });
       }
-
+      console.log("Admin access granted for user:", user);
       req.user = user;
       next();
     } catch (err) {

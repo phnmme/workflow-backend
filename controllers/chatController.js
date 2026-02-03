@@ -7,8 +7,9 @@ const Message = require("../models/messageModel");
 exports.createRoom = async (req, res) => {
   try {
     const room = await ChatRoom.create({
+      name: req.body.name,
       members: req.body.members,
-      owner: req.user.id,
+      ownerId: req.user.id,
     });
     res.status(201).json(room);
   } catch (err) {
@@ -16,11 +17,27 @@ exports.createRoom = async (req, res) => {
   }
 };
 
-// Get my rooms
 exports.getMyRooms = async (req, res) => {
   try {
+    const userId = req.user.id;
+
     const rooms = await ChatRoom.find({
-      members: req.user.id,
+      $or: [{ ownerId: userId }, { members: userId }],
+    }).populate("members", "username email");
+
+    res.json(rooms);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getUserRooms = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const rooms = await ChatRoom.find({
+      members: userId,
     }).populate("members", "username email");
 
     res.json(rooms);
@@ -29,26 +46,12 @@ exports.getMyRooms = async (req, res) => {
   }
 };
 
-// Get another user's rooms
-exports.getUserRooms = async (req, res) => {
-  try {
-    const { userId } = req.params;
-
-    const rooms = await ChatRoom.find({
-      members: userId,
-    });
-
-    res.json(rooms);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// Get room by id
 exports.getRoomById = async (req, res) => {
   try {
-    const room = await ChatRoom.findById(req.params.roomId)
-      .populate("members", "username email");
+    const room = await ChatRoom.findById(req.params.roomId).populate(
+      "members",
+      "username email"
+    );
 
     if (!room) return res.status(404).json({ message: "Room not found" });
 
@@ -57,8 +60,6 @@ exports.getRoomById = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-/* ====================== MEMBERS */
 
 // Add user to room
 exports.addUserToRoom = async (req, res) => {

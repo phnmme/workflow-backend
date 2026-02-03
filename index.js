@@ -10,31 +10,33 @@ const attendRoute = require("./routes/attendRoute");
 const logRoute = require("./routes/logRoute");
 const env = require("./configs/env");
 
-const userRoute = require("./routes/authRoute");
 const chatRoute = require("./routes/chatRoute");
+const cors = require("cors");
 
-const app = express();
 const server = http.createServer(app);
 
-// middleware
-app.use(express.json());
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+require("./socket/chat")(io);
+connectDB();
 
-// routes
+app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
 app.use("/s/v1", userRoute);
 app.use("/s/v1", dayoffRoute);
-app.use("/chat", chatRoute);
+app.use("/s/v1/chat", chatRoute);
 
-// socket.io
-const io = new Server(server, {
-  cors: { origin: "*" },
-});
-
-require("./socket/chat")(io);
-
-connectDB();
-app.use("/attendance",attendRoute);
-app.use("/log",logRoute);
-
+app.use("/s/v1/attendance", attendRoute);
+app.use("/s/v1/log", logRoute);
 
 server.listen(env.port, () => {
   console.log(`Server is running on port ${env.port}`);
